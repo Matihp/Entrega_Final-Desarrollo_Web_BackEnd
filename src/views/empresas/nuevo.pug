@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+    h1 Añadir Nueva Empresa
+    
+    div.card.mt-4
+        div.card-body
+            form(action="/empresas" method="POST")
+                div.mb-3
+                    label.form-label Nombre de la Empresa
+                    input.form-control(type="text" name="nombre" minlength="3" title="Debe tener al menos 3 caracteres" required)
+                div.mb-3
+                    label.form-label CUIT
+                    input.form-control(type="text" name="cuit" minlength="11" title="El CUIT debe tener al menos 11 caracteres" required)
+                
+                button.btn.btn-success(type="submit") Guardar Empresa
+                a.btn.btn-secondary.ms-2(href="/empresas") Cancelar

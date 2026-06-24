@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    h1.fs-4.mb-4 Dashboard Institucional
+    div.row
+        div.col-md-4
+            div.card.text-white.bg-info.h-100.text-center
+                div.card-header.fw-bold Empresas Activas
+                div.card-body.py-5
+                    h2.card-title.display-4.fw-bold #{indicadores.totalEmpresasActivas}
+                    p.card-text Total de empresas registradas en el sistema.
+        div.col-md-4
+            div.card.text-white.bg-warning.h-100.text-center.text-dark
+                div.card-header.fw-bold Novedades Pendientes
+                div.card-body.py-5
+                    h2.card-title.display-4.fw-bold #{indicadores.novedadesPendientes}
+                    p.card-text Novedades a la espera de procesamiento.
+        div.col-md-4
+            div.card.text-white.bg-danger.h-100.text-center
+                div.card-header.fw-bold Carga Operativa Estimada
+                div.card-body.py-5
+                    h2.card-title.display-4.fw-bold #{indicadores.cargaOperativaEstimadaHoras} hs
+                    p.card-text Horas estimadas para resolver pendientes.

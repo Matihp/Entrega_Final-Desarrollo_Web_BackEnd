@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+    h1 Añadir Nuevo Empleado
+    
+    div.card.mt-4
+        div.card-body
+            form(action="/empleados" method="POST")
+                div.mb-3
+                    label.form-label Nombre y Apellido
+                    input.form-control(type="text" name="nombre" minlength="4" title="Debe tener al menos 4 caracteres" required)
+                
+                div.mb-3
+                    label.form-label Empresa a la que pertenece
+                    select.form-select(name="empresaId" required)
+                        option(value="") Seleccione una empresa...
+                        each empresa in empresas
+                            option(value=empresa.id)= empresa.nombre
+                
+                button.btn.btn-success(type="submit") Guardar Empleado
+                a.btn.btn-secondary.ms-2(href="/empleados") Cancelar

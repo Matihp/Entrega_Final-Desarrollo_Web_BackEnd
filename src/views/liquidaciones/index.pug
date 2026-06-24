@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+    div.d-flex.justify-content-between.align-items-center.mb-3
+        h1.fs-4 Liquidaciones de Sueldos
+        a.btn.btn-primary(href="/liquidaciones/nuevo") Generar Liquidación
+    
+    if liquidaciones.length === 0
+        div.alert.alert-info No hay liquidaciones registradas.
+    else
+        table.table.table-striped.table-hover
+            thead.table-dark
+                tr
+                    th ID
+                    th Empleado
+                    th Mes
+                    th Monto ($)
+                    th Acciones
+            tbody
+                each liq in liquidaciones
+                    tr
+                        td= liq.id
+                        td= liq.empleadoNombre
+                        td= liq.mes
+                        td= liq.monto
+                        td
+                            a.btn.btn-sm.btn-warning.me-1(href=`/liquidaciones/${liq.id}/editar`) Editar
+                            form(action=`/liquidaciones/${liq.id}/eliminar` method="POST" class="d-inline")
+                                button.btn.btn-sm.btn-danger(type="submit" onclick="return confirm('¿Seguro que desea eliminar esta liquidación?');") Eliminar

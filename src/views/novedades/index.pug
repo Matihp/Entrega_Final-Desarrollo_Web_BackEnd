@@ -1,0 +1,50 @@
+extends ../layout
+
+block content
+    div.d-flex.justify-content-between.align-items-center.mb-3
+        h1.fs-4 Novedades Laborales
+        a.btn.btn-primary(href="/novedades/nuevo") Cargar Novedad
+
+    div.card.mb-4
+        div.card-body
+            form(action="/novedades" method="GET" class="row g-3 align-items-end")
+                div.col-md-4
+                    label.form-label Filtrar por Estado:
+                    select.form-select(name="estado")
+                        option(value="") Todos los estados
+                        option(value="pendiente" selected=filtroEstado==='pendiente') Pendiente
+                        option(value="procesada" selected=filtroEstado==='procesada') Procesada
+                        option(value="rechazada" selected=filtroEstado==='rechazada') Rechazada
+                div.col-md-2
+                    button.btn.btn-secondary(type="submit") Filtrar
+                div.col-md-2
+                    if filtroEstado
+                        a.btn.btn-outline-secondary(href="/novedades") Limpiar
+
+    if novedades.length === 0
+        div.alert.alert-info No se encontraron novedades.
+    else
+        table.table.table-striped.table-hover
+            thead.table-dark
+                tr
+                    th ID
+                    th Empleado
+                    th Descripción
+                    th Estado
+                    th Acciones
+            tbody
+                each novedad in novedades
+                    tr
+                        td= novedad.id
+                        td= novedad.empleadoNombre
+                        td= novedad.descripcion
+                        td
+                            form(action=`/novedades/${novedad.id}/estado` method="POST" class="m-0")
+                                select.form-select.form-select-sm.fw-bold(name="estado" onchange="this.form.submit()" class=(novedad.estado==='procesada'?'bg-success text-white':(novedad.estado==='rechazada'?'bg-danger text-white':'bg-warning text-dark')))
+                                    option(value="pendiente" selected=novedad.estado==='pendiente' class="bg-white text-dark") Pendiente
+                                    option(value="procesada" selected=novedad.estado==='procesada' class="bg-white text-dark") Procesada
+                                    option(value="rechazada" selected=novedad.estado==='rechazada' class="bg-white text-dark") Rechazada
+                        td
+                            a.btn.btn-sm.btn-warning.me-1(href=`/novedades/${novedad.id}/editar`) Editar
+                            form(action=`/novedades/${novedad.id}/eliminar` method="POST" class="d-inline")
+                                button.btn.btn-sm.btn-danger(type="submit" onclick="return confirm('¿Seguro que desea eliminar esta novedad?');") Eliminar

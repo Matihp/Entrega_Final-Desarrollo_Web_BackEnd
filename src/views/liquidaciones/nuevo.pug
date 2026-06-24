@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+    h1 Generar Liquidación
+    
+    div.card.mt-4
+        div.card-body
+            form(action="/liquidaciones" method="POST")
+                div.mb-3
+                    label.form-label Empleado
+                    select.form-select(name="empleadoId" required)
+                        option(value="") Seleccione un empleado...
+                        each empleado in empleados
+                            option(value=empleado.id)= empleado.nombre
+                
+                div.mb-3
+                    label.form-label Mes de Liquidación (Ej: Enero 2026)
+                    input.form-control(type="text" name="mes" required)
+                
+                div.mb-3
+                    label.form-label Monto a Liquidar ($)
+                    input.form-control(type="number" step="0.01" name="monto" min="0.01" required)
+                
+                button.btn.btn-success(type="submit") Guardar Liquidación
+                a.btn.btn-secondary.ms-2(href="/liquidaciones") Cancelar

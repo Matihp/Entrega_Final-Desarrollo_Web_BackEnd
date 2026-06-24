@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+    h1 Cargar Novedad Laboral
+    
+    div.card.mt-4
+        div.card-body
+            form(action="/novedades" method="POST")
+                div.mb-3
+                    label.form-label Empleado
+                    select.form-select(name="empleadoId" required)
+                        option(value="") Seleccione un empleado...
+                        each empleado in empleados
+                            option(value=empleado.id)= empleado.nombre
+                
+                div.mb-3
+                    label.form-label Descripción de la Novedad (Ej: Licencia médica, Ausencia injustificada)
+                    textarea.form-control(name="descripcion" rows="3" minlength="8" title="Debe tener al menos 8 caracteres" required)
+                
+                button.btn.btn-success(type="submit") Guardar Novedad
+                a.btn.btn-secondary.ms-2(href="/novedades") Cancelar

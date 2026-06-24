@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+    h1 Editar Novedad
+    
+    div.card.mt-4
+        div.card-body
+            form(action=`/novedades/${novedad.id}/editar` method="POST")
+                div.mb-3
+                    label.form-label Empleado
+                    select.form-select(name="empleadoId" required)
+                        each empleado in empleados
+                            option(value=empleado.id selected=empleado.id===novedad.empleadoId)= empleado.nombre
+                
+                div.mb-3
+                    label.form-label Descripción de la Novedad (Ej: Licencia médica, Ausencia injustificada)
+                    textarea.form-control(name="descripcion" rows="3" minlength="8" title="Debe tener al menos 8 caracteres" required)= novedad.descripcion
+                
+                button.btn.btn-primary(type="submit") Actualizar Novedad
+                a.btn.btn-secondary.ms-2(href="/novedades") Cancelar

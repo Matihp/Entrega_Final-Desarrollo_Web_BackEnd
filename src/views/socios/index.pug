@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+    div.d-flex.justify-content-between.align-items-center.mb-3
+        h1.fs-4 Socios
+        a.btn.btn-primary(href="/socios/nuevo") Añadir Socio
+    
+    if socios.length === 0
+        div.alert.alert-info No hay socios registrados.
+    else
+        table.table.table-striped.table-hover
+            thead.table-dark
+                tr
+                    th ID
+                    th Nombre
+                    th % Participación
+                    th Acciones
+            tbody
+                each socio in socios
+                    tr
+                        td= socio.id
+                        td= socio.nombre
+                        td= socio.porcentajeParticipacion + "%"
+                        td
+                            a.btn.btn-sm.btn-warning.me-1(href=`/socios/${socio.id}/editar`) Editar
+                            form(action=`/socios/${socio.id}/eliminar` method="POST" class="d-inline")
+                                button.btn.btn-sm.btn-danger(type="submit" onclick="return confirm('¿Seguro que desea eliminar este socio?');") Eliminar

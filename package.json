@@ -1,0 +1,23 @@
+{
+  "name": "dswb_2e_grupo6_1c26",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.6.3",
+    "pug": "^3.0.4"
+  }
+}

@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+    div.d-flex.justify-content-between.align-items-center.mb-3
+        h1.fs-4 Empresas
+        a.btn.btn-primary(href="/empresas/nuevo") Añadir Empresa
+    
+    if empresas.length === 0
+        div.alert.alert-info No hay empresas registradas en el sistema.
+    else
+        table.table.table-striped.table-hover
+            thead.table-dark
+                tr
+                    th ID
+                    th Nombre
+                    th CUIT
+                    th Acciones
+            tbody
+                each empresa in empresas
+                    tr
+                        td= empresa.id
+                        td= empresa.nombre
+                        td= empresa.cuit
+                        td
+                            a.btn.btn-sm.btn-warning.me-1(href=`/empresas/${empresa.id}/editar`) Editar
+                            form(action=`/empresas/${empresa.id}/eliminar` method="POST" class="d-inline")
+                                button.btn.btn-sm.btn-danger(type="submit" onclick="return confirm('¿Seguro que desea eliminar esta empresa?');") Eliminar
