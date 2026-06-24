@@ -15,6 +15,8 @@ const empleadoRoutes = require('./routes/empleadoRoutes');
 const novedadRoutes = require('./routes/novedadRoutes');
 const socioRoutes = require('./routes/socioRoutes');
 const liquidacionRoutes = require('./routes/liquidacionRoutes');
+const authRoutes = require('./routes/authRoutes');
+const authJWT = require('./middleware/authJWT');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,11 +35,16 @@ app.use(auditMiddleware);
 
 // Rutas
 app.use('/', viewRoutes); // Rutas de Pug
-app.use('/api/empresas', empresaRoutes);
-app.use('/api/empleados', empleadoRoutes);
-app.use('/api/novedades', novedadRoutes);
-app.use('/api/socios', socioRoutes);
-app.use('/api/liquidaciones', liquidacionRoutes);
+
+// Rutas publicas
+app.use('/api/auth', authRoutes);
+
+// Rutas protegidas con JWT
+app.use('/api/empresas', authJWT, empresaRoutes);
+app.use('/api/empleados', authJWT, empleadoRoutes);
+app.use('/api/novedades', authJWT, novedadRoutes);
+app.use('/api/socios', authJWT, socioRoutes);
+app.use('/api/liquidaciones', authJWT, liquidacionRoutes);
 
 // Manejo de errores
 app.use(errorHandler);
