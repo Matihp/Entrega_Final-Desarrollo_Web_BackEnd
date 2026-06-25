@@ -25,6 +25,10 @@ html(lang="es" data-bs-theme="dark")
                             a.nav-link(href="/socios") Socios
                         li.nav-item
                             a.nav-link(href="/liquidaciones") Liquidaciones
+                    if user
+                        div.d-flex.align-items-center.ms-lg-4.mt-3.mt-lg-0
+                            span.text-light.me-3.fw-medium Hola, #{user.name || user.username}
+                            a.btn.btn-outline-light.btn-sm.fw-bold(href="/logout") Cerrar Sesión
         div.container.mt-4
             block content
         
