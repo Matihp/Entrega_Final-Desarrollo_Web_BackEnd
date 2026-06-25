@@ -1,23 +1,151 @@
 extends layout
 
 block content
-    h1.fs-4.mb-4 Dashboard Institucional
-    div.row
+    div.d-flex.justify-content-between.align-items-center.mb-4.mt-2
+        h1.fs-3.fw-bold.mb-0 Dashboard Institucional
+
+    div.row.g-4
         div.col-md-4
-            div.card.text-white.bg-info.h-100.text-center
-                div.card-header.fw-bold Empresas Activas
-                div.card-body.py-5
-                    h2.card-title.display-4.fw-bold #{indicadores.totalEmpresasActivas}
-                    p.card-text Total de empresas registradas en el sistema.
+            div.card.border-0.shadow-sm.rounded-4.h-100.hover-shadow.transition
+                div.card-body.p-4.d-flex.flex-column.justify-content-center
+                    div.d-flex.align-items-center.mb-3
+                        div.bg-primary.bg-opacity-10.p-3.rounded-circle.me-3.d-flex.align-items-center.justify-content-center(style="width: 50px; height: 50px;")
+                            span.fs-5 🏢
+                        h5.card-title.text-muted.fw-semibold.mb-0 Empresas Activas
+                    h2.display-4.fw-bolder.mb-0.text-primary #{indicadores.totalEmpresasActivas}
+                    p.text-muted.small.mt-2.mb-0 Total registradas en el sistema
+
         div.col-md-4
-            div.card.text-white.bg-warning.h-100.text-center.text-dark
-                div.card-header.fw-bold Novedades Pendientes
-                div.card-body.py-5
-                    h2.card-title.display-4.fw-bold #{indicadores.novedadesPendientes}
-                    p.card-text Novedades a la espera de procesamiento.
+            div.card.border-0.shadow-sm.rounded-4.h-100.hover-shadow.transition
+                div.card-body.p-4.d-flex.flex-column.justify-content-center
+                    div.d-flex.align-items-center.mb-3
+                        div.bg-warning.bg-opacity-10.p-3.rounded-circle.me-3.d-flex.align-items-center.justify-content-center(style="width: 50px; height: 50px;")
+                            span.fs-5 ⏳
+                        h5.card-title.text-muted.fw-semibold.mb-0 Novedades Pendientes
+                    h2.display-4.fw-bolder.mb-0.text-warning #{indicadores.novedadesPendientes}
+                    p.text-muted.small.mt-2.mb-0 A la espera de procesamiento
+
         div.col-md-4
-            div.card.text-white.bg-danger.h-100.text-center
-                div.card-header.fw-bold Carga Operativa Estimada
-                div.card-body.py-5
-                    h2.card-title.display-4.fw-bold #{indicadores.cargaOperativaEstimadaHoras} hs
-                    p.card-text Horas estimadas para resolver pendientes.
+            div.card.border-0.shadow-sm.rounded-4.h-100.hover-shadow.transition
+                div.card-body.p-4.d-flex.flex-column.justify-content-center
+                    div.d-flex.align-items-center.mb-3
+                        div.bg-danger.bg-opacity-10.p-3.rounded-circle.me-3.d-flex.align-items-center.justify-content-center(style="width: 50px; height: 50px;")
+                            span.fs-5 ⏱️
+                        h5.card-title.text-muted.fw-semibold.mb-0 Carga Operativa
+                    div.d-flex.align-items-baseline
+                        h2.display-4.fw-bolder.mb-0.text-danger #{indicadores.cargaOperativaEstimadaHoras} 
+                        span.text-danger.ms-2.fw-bold hs
+                    p.text-muted.small.mt-2.mb-0 Tiempo estimado de resolución
+
+    //Gráficos de Chart.js
+    div.row.mt-5.g-4
+        div.col-md-4
+            div.card.border-0.shadow-sm.rounded-4.h-100
+                div.card-header.bg-transparent.border-0.pt-4.pb-0.text-center
+                    h5.fw-bold.text-secondary Estado de Novedades
+                div.card-body.d-flex.justify-content-center.pb-4
+                    div(style="position: relative; height:250px; width:100%; display: flex; justify-content: center;")
+                        canvas#novedadesChart
+
+        div.col-md-4
+            div.card.border-0.shadow-sm.rounded-4.h-100
+                div.card-header.bg-transparent.border-0.pt-4.pb-0.text-center
+                    h5.fw-bold.text-secondary Empleados por Empresa
+                div.card-body.d-flex.justify-content-center.pb-4
+                    div(style="position: relative; height:250px; width:100%; display: flex; justify-content: center;")
+                        canvas#empleadosChart
+
+        div.col-md-4
+            div.card.border-0.shadow-sm.rounded-4.h-100
+                div.card-header.bg-transparent.border-0.pt-4.pb-0.text-center
+                    h5.fw-bold.text-secondary Montos de Liquidaciones
+                div.card-body.d-flex.justify-content-center.pb-4
+                    div(style="position: relative; height:250px; width:100%; display: flex; justify-content: center;")
+                        canvas#liquidacionesChart
+                    
+    style.
+        .hover-shadow { transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out; }
+        .hover-shadow:hover { box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; transform: translateY(-3px); }
+
+    script(src="https://cdn.jsdelivr.net/npm/chart.js")
+    script.
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctxNovedades = document.getElementById('novedadesChart').getContext('2d');
+            const dataNov = [#{indicadores.novedadesPendientes || 0}, #{indicadores.novedadesProcesadas || 0}, #{indicadores.novedadesRechazadas || 0}];
+            const allZeroNov = dataNov.every(v => v === 0);
+
+            new Chart(ctxNovedades, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pendientes', 'Procesadas', 'Rechazadas'],
+                    datasets: [{
+                        data: allZeroNov ? [1] : dataNov,
+                        backgroundColor: allZeroNov ? ['#e9ecef'] : ['rgba(255, 193, 7, 0.8)', 'rgba(40, 167, 69, 0.8)', 'rgba(220, 53, 69, 0.8)'],
+                        borderWidth: 2,
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '65%',
+                    plugins: { 
+                        legend: { position: 'bottom', labels: { usePointStyle: true } },
+                        tooltip: { callbacks: { label: function(context) { return allZeroNov ? ' No hay datos' : ' ' + context.label + ': ' + context.parsed; } } }
+                    }
+                }
+            });
+
+            const empLabels = !{JSON.stringify(Object.keys(indicadores.empleadosPorEmpresa || {}))};
+            const empData = !{JSON.stringify(Object.values(indicadores.empleadosPorEmpresa || {}))};
+            const ctxEmpleados = document.getElementById('empleadosChart').getContext('2d');
+            const allZeroEmp = empData.length === 0 || empData.every(v => v === 0);
+
+            new Chart(ctxEmpleados, {
+                type: 'pie',
+                data: {
+                    labels: allZeroEmp ? ['Sin datos'] : empLabels,
+                    datasets: [{
+                        data: allZeroEmp ? [1] : empData,
+                        backgroundColor: allZeroEmp ? ['#e9ecef'] : [
+                            '#0d6efd', '#6610f2', '#6f42c1', '#d63384', '#fd7e14', '#20c997', '#0dcaf0'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8 } },
+                        tooltip: { callbacks: { label: function(context) { return allZeroEmp ? ' No hay datos' : ' ' + context.label + ': ' + context.parsed + ' empleados'; } } }
+                    }
+                }
+            });
+
+            const liqLabels = !{JSON.stringify(Object.keys(indicadores.montoPorMes || {}))};
+            const liqData = !{JSON.stringify(Object.values(indicadores.montoPorMes || {}))};
+            const ctxLiquidaciones = document.getElementById('liquidacionesChart').getContext('2d');
+            const allZeroLiq = liqData.length === 0 || liqData.every(v => v === 0);
+
+            new Chart(ctxLiquidaciones, {
+                type: 'bar',
+                data: {
+                    labels: allZeroLiq ? ['Sin datos'] : liqLabels,
+                    datasets: [{
+                        label: 'Monto Total ($)',
+                        data: allZeroLiq ? [0] : liqData,
+                        backgroundColor: 'rgba(13, 110, 253, 0.7)',
+                        borderColor: 'rgba(13, 110, 253, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: function(context) { return allZeroLiq ? ' No hay datos' : ' $' + context.parsed.y.toLocaleString(); } } }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        });
