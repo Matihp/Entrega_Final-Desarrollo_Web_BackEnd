@@ -1,9 +1,18 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+
 const connectDB = require('./config/db');
+
 const auditMiddleware = require('./middleware/audit');
 const errorHandler = require('./middleware/errorHandler');
+
+const session = require('express-session');
+const passport = require('passport');
+const flash = require('connect-flash');
+
+// Configuración de Passport
+require('./config/passport')(passport);
 
 // Conexión a Base de Datos
 connectDB();
@@ -17,6 +26,8 @@ const socioRoutes = require('./routes/socioRoutes');
 const liquidacionRoutes = require('./routes/liquidacionRoutes');
 const authRoutes = require('./routes/authRoutes');
 const authJWT = require('./middleware/authJWT');
+const authWebRoutes = require('./routes/authWebRoutes');
+const isAuthenticated = require('./middleware/authWeb');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,13 +39,27 @@ app.set('view engine', 'pug');
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Sesiones y passport
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Middleware de auditoria
 app.use(auditMiddleware);
 
-// Rutas
-app.use('/', viewRoutes); // Rutas de Pug
+// Ruta de login-registro web
+app.use('/', authWebRoutes);
+
+// Ruta de Pug protegida
+app.use('/', isAuthenticated, viewRoutes);
 
 // Rutas publicas
 app.use('/api/auth', authRoutes);
