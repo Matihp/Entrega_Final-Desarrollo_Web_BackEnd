@@ -19,6 +19,15 @@ const NovedadController = {
             
             const nuevaNovedad = new Novedad(req.body);
             await nuevaNovedad.save();
+            
+            const io = req.app.get('io');
+            if (io) {
+                io.emit('alerta_nomina', {
+                    mensaje: "¡Nuevo candidato aprobado desde el ATS! Novedad generada.",
+                    novedad: nuevaNovedad
+                });
+            }
+            
             res.status(201).json(nuevaNovedad);
         } catch (error) {
             next(error);
@@ -41,6 +50,15 @@ const NovedadController = {
             if (!actualizada) {
                 return res.status(404).json({ error: "Novedad no encontrada para actualizar" });
             }
+            
+            const io = req.app.get('io');
+            if (io) {
+                io.emit('alerta_nomina', {
+                    mensaje: "¡Novedad actualizada desde el sistema!",
+                    novedad: actualizada
+                });
+            }
+            
             res.status(200).json(actualizada);
         } catch (error) {
             next(error);

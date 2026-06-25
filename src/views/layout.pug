@@ -32,7 +32,16 @@ html(lang="es" data-bs-theme="dark")
         div.container.mt-4
             block content
         
+        //Toast para notificaciones Socket.io
+        div.toast-container.position-fixed.bottom-0.end-0.p-3(style="z-index: 1055;")
+            div#socketToast.toast(role="alert" aria-live="assertive" aria-atomic="true")
+                div.toast-header.bg-primary.text-white
+                    strong.me-auto 🔔 Alerta de Nómina
+                    button.btn-close.btn-close-white(type="button" data-bs-dismiss="toast" aria-label="Close")
+                div.toast-body#socketToastBody 
+        
         script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js")
+        script(src="/socket.io/socket.io.js")
         script.
             document.addEventListener("DOMContentLoaded", function() {
                 const currentPath = window.location.pathname;
@@ -43,4 +52,19 @@ html(lang="es" data-bs-theme="dark")
                         link.classList.add('active', 'text-white');
                     }
                 });
+
+                if (typeof io !== 'undefined') {
+                    const socket = io();
+                    socket.on('alerta_nomina', function(data) {
+                        const toastBody = document.getElementById('socketToastBody');
+                        if (toastBody) {
+                            toastBody.innerText = data.mensaje;
+                            const toastElement = document.getElementById('socketToast');
+                            const toast = new bootstrap.Toast(toastElement);
+                            toast.show();
+                        } else {
+                            alert(data.mensaje);
+                        }
+                    });
+                }
             });

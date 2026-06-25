@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const http = require('http');
+const { Server } = require('socket.io');
 
 const connectDB = require('./config/db');
 
@@ -30,6 +32,9 @@ const authWebRoutes = require('./routes/authWebRoutes');
 const isAuthenticated = require('./middleware/authWeb');
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+app.set('io', io);
 const PORT = process.env.PORT || 3000;
 
 // Configuración del motor de plantillas Pug
@@ -79,6 +84,6 @@ app.use('/api/liquidaciones', authJWT, liquidacionRoutes);
 // Manejo de errores
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Servidor iniciado en http://localhost:${PORT}`);
 });
