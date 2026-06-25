@@ -19,10 +19,20 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', passport.authenticate('signup', {
-    successRedirect: '/',
+    successRedirect: '/register-success',
     failureRedirect: '/register',
     failureFlash: true
 }));
+router.get('/register-success', (req, res, next) => {
+    if (req.isAuthenticated()) {
+        req.logout(function(err) {
+            if (err) { return next(err); }
+            res.render('register-success');
+        });
+    } else {
+        res.render('register-success');
+    }
+});
 
 router.get('/logout', (req, res, next) => {
     req.logout(function(err) {
