@@ -10,6 +10,18 @@ const empleadoSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Empresa',
         required: [true, "Nombre y empresaId son obligatorios para el empleado"]
+    },
+    dni: {
+        type: String,
+        required: false
+    },
+    email: {
+        type: String,
+        required: false
+    },
+    cbu: {
+        type: String,
+        required: false
     }
 }, { versionKey: false });
 

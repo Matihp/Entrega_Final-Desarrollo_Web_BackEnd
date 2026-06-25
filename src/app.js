@@ -26,6 +26,7 @@ const empleadoRoutes = require('./routes/empleadoRoutes');
 const novedadRoutes = require('./routes/novedadRoutes');
 const socioRoutes = require('./routes/socioRoutes');
 const liquidacionRoutes = require('./routes/liquidacionRoutes');
+const webhookRoutes = require('./routes/webhookRoutes');
 const authRoutes = require('./routes/authRoutes');
 const authJWT = require('./middleware/authJWT');
 const authWebRoutes = require('./routes/authWebRoutes');
@@ -73,6 +74,7 @@ app.use('/', isAuthenticated, viewRoutes);
 
 // Rutas publicas
 app.use('/api/auth', authRoutes);
+app.use('/api/webhook', webhookRoutes);
 
 // Rutas protegidas con JWT
 app.use('/api/empresas', authJWT, empresaRoutes);
