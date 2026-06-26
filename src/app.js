@@ -4,7 +4,7 @@ const path = require('path');
 const http = require('http');
 const { Server } = require('socket.io');
 
-const connectDB = require('./config/db');
+const { connectDB } = require('./config/db');
 
 const auditMiddleware = require('./middleware/audit');
 const errorHandler = require('./middleware/errorHandler');
@@ -15,9 +15,6 @@ const flash = require('connect-flash');
 
 // Configuración de Passport
 require('./config/passport')(passport);
-
-// Conexión a Base de Datos
-connectDB();
 
 // Importación de rutas
 const viewRoutes = require('./routes/viewRoutes');
@@ -69,9 +66,6 @@ app.use(auditMiddleware);
 // Ruta de login-registro web
 app.use('/', authWebRoutes);
 
-// Ruta de Pug protegida
-app.use('/', isAuthenticated, viewRoutes);
-
 // Rutas publicas
 app.use('/api/auth', authRoutes);
 app.use('/api/webhook', webhookRoutes);
@@ -83,9 +77,19 @@ app.use('/api/novedades', authJWT, novedadRoutes);
 app.use('/api/socios', authJWT, socioRoutes);
 app.use('/api/liquidaciones', authJWT, liquidacionRoutes);
 
+// Ruta de Pug protegida (debe ir al final porque captura todo lo que empiece con /)
+app.use('/', isAuthenticated, viewRoutes);
+
 // Manejo de errores
 app.use(errorHandler);
 
-server.listen(PORT, () => {
-    console.log(`Servidor iniciado en http://localhost:${PORT}`);
-});
+if (require.main === module) {
+    // Conexión a Base de Datos
+    connectDB().then(() => {
+        server.listen(PORT, () => {
+            console.log(`Servidor iniciado en http://localhost:${PORT}`);
+        });
+    });
+}
+
+module.exports = { app, server };
