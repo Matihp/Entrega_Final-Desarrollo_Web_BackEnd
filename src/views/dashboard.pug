@@ -2,63 +2,72 @@ extends layout
 
 block content
     div.d-flex.justify-content-between.align-items-center.mb-4.mt-2
-        h1.fs-3.fw-bold.mb-0 Dashboard Institucional
+        h1.fs-3.fw-bold.mb-0.text-light Dashboard Institucional
 
     div.row.g-4
         div.col-md-4
-            div.card.border-0.shadow-sm.rounded-4.h-100.hover-shadow.transition
+            div.card.border-0.shadow-sm.rounded-4.h-100.hover-shadow.transition.bg-info.text-white
                 div.card-body.p-4.d-flex.flex-column.justify-content-center
                     div.d-flex.align-items-center.mb-3
-                        div.bg-primary.bg-opacity-10.p-3.rounded-circle.me-3.d-flex.align-items-center.justify-content-center(style="width: 50px; height: 50px;")
+                        div.bg-white.bg-opacity-25.p-3.rounded-circle.me-3.d-flex.align-items-center.justify-content-center(style="width: 50px; height: 50px;")
                             span.fs-5 🏢
-                        h5.card-title.text-muted.fw-semibold.mb-0 Empresas Activas
-                    h2.display-4.fw-bolder.mb-0.text-primary #{indicadores.totalEmpresasActivas}
-                    p.text-muted.small.mt-2.mb-0 Total registradas en el sistema
+                        h5.card-title.fw-semibold.mb-0 Empresas Activas
+                    h2.display-4.fw-bolder.mb-0 #{indicadores.totalEmpresasActivas}
+                    p.small.mt-2.mb-0.opacity-75 Total registradas en el sistema
 
         div.col-md-4
-            div.card.border-0.shadow-sm.rounded-4.h-100.hover-shadow.transition
+            div.card.border-0.shadow-sm.rounded-4.h-100.hover-shadow.transition.bg-warning.text-dark
                 div.card-body.p-4.d-flex.flex-column.justify-content-center
                     div.d-flex.align-items-center.mb-3
-                        div.bg-warning.bg-opacity-10.p-3.rounded-circle.me-3.d-flex.align-items-center.justify-content-center(style="width: 50px; height: 50px;")
+                        div.bg-white.bg-opacity-50.p-3.rounded-circle.me-3.d-flex.align-items-center.justify-content-center(style="width: 50px; height: 50px;")
                             span.fs-5 ⏳
-                        h5.card-title.text-muted.fw-semibold.mb-0 Novedades Pendientes
-                    h2.display-4.fw-bolder.mb-0.text-warning #{indicadores.novedadesPendientes}
-                    p.text-muted.small.mt-2.mb-0 A la espera de procesamiento
+                        h5.card-title.fw-semibold.mb-0 Novedades Pendientes
+                    h2.display-4.fw-bolder.mb-0 #{indicadores.novedadesPendientes}
+                    p.small.mt-2.mb-0.opacity-75 A la espera de procesamiento
 
         div.col-md-4
-            div.card.border-0.shadow-sm.rounded-4.h-100.hover-shadow.transition
+            div.card.border-0.shadow-sm.rounded-4.h-100.hover-shadow.transition.bg-danger.text-white
                 div.card-body.p-4.d-flex.flex-column.justify-content-center
                     div.d-flex.align-items-center.mb-3
-                        div.bg-danger.bg-opacity-10.p-3.rounded-circle.me-3.d-flex.align-items-center.justify-content-center(style="width: 50px; height: 50px;")
+                        div.bg-white.bg-opacity-25.p-3.rounded-circle.me-3.d-flex.align-items-center.justify-content-center(style="width: 50px; height: 50px;")
                             span.fs-5 ⏱️
-                        h5.card-title.text-muted.fw-semibold.mb-0 Carga Operativa
+                        h5.card-title.fw-semibold.mb-0 Carga Operativa
                     div.d-flex.align-items-baseline
-                        h2.display-4.fw-bolder.mb-0.text-danger #{indicadores.cargaOperativaEstimadaHoras} 
-                        span.text-danger.ms-2.fw-bold hs
-                    p.text-muted.small.mt-2.mb-0 Tiempo estimado de resolución
+                        h2.display-4.fw-bolder.mb-0 #{indicadores.cargaOperativaEstimadaHoras} 
+                        span.ms-2.fw-bold.opacity-75 hs
+                    p.small.mt-2.mb-0.opacity-75 Tiempo estimado de resolución
 
-    //Gráficos de Chart.js
-    div.row.mt-5.g-4
+    //- Separador y Título para los Gráficos
+    div.row.mt-5.mb-3
+        div.col-12
+            hr.text-muted.opacity-25.mb-4
+            div.d-flex.align-items-center
+                span.fs-4.me-2 📊
+                h4.fw-bold.mb-0.text-light Análisis Gráfico Detallado
+            p.text-muted.small.mt-1 Representación visual de las métricas clave de la empresa.
+
+    //- Gráficos de Chart.js
+    div.row.mt-3.g-4.pb-5.mb-5
         div.col-md-4
-            div.card.border-0.shadow-sm.rounded-4.h-100
+            div.card.border-0.shadow-lg.rounded-4.h-100.text-bg-dark
                 div.card-header.bg-transparent.border-0.pt-4.pb-0.text-center
-                    h5.fw-bold.text-secondary Estado de Novedades
+                    h5.fw-bold Estado de Novedades
                 div.card-body.d-flex.justify-content-center.pb-4
                     div(style="position: relative; height:250px; width:100%; display: flex; justify-content: center;")
                         canvas#novedadesChart
 
         div.col-md-4
-            div.card.border-0.shadow-sm.rounded-4.h-100
+            div.card.border-0.shadow-lg.rounded-4.h-100.text-bg-dark
                 div.card-header.bg-transparent.border-0.pt-4.pb-0.text-center
-                    h5.fw-bold.text-secondary Empleados por Empresa
+                    h5.fw-bold Empleados por Empresa
                 div.card-body.d-flex.justify-content-center.pb-4
                     div(style="position: relative; height:250px; width:100%; display: flex; justify-content: center;")
                         canvas#empleadosChart
 
         div.col-md-4
-            div.card.border-0.shadow-sm.rounded-4.h-100
+            div.card.border-0.shadow-lg.rounded-4.h-100.text-bg-dark
                 div.card-header.bg-transparent.border-0.pt-4.pb-0.text-center
-                    h5.fw-bold.text-secondary Montos de Liquidaciones
+                    h5.fw-bold Montos de Liquidaciones
                 div.card-body.d-flex.justify-content-center.pb-4
                     div(style="position: relative; height:250px; width:100%; display: flex; justify-content: center;")
                         canvas#liquidacionesChart
