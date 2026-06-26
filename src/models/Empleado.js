@@ -13,15 +13,19 @@ const empleadoSchema = new mongoose.Schema({
     },
     dni: {
         type: String,
-        required: false
+        required: [true, "El DNI es obligatorio"],
+        unique: true
     },
     email: {
         type: String,
-        required: false
+        required: [true, "El correo electrónico es obligatorio"],
+        match: [/.+\@.+\..+/, "Por favor ingrese un correo válido"]
     },
     cbu: {
         type: String,
-        required: false
+        required: [true, "El CBU es obligatorio"],
+        minlength: [22, "El CBU debe tener exactamente 22 caracteres"],
+        maxlength: [22, "El CBU debe tener exactamente 22 caracteres"]
     }
 }, { versionKey: false });
 
