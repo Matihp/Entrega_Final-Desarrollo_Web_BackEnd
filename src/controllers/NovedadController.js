@@ -23,7 +23,7 @@ const NovedadController = {
             const io = req.app.get('io');
             if (io) {
                 io.emit('alerta_nomina', {
-                    mensaje: "¡Nuevo candidato aprobado desde el ATS! Novedad generada.",
+                    mensaje: "¡Una nueva novedad ha sido registrada en el sistema!",
                     novedad: nuevaNovedad
                 });
             }

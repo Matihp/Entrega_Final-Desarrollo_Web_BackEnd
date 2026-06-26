@@ -25,6 +25,14 @@ const EmpleadoController = {
         try {
             const nuevoEmpleado = new Empleado(req.body);
             await nuevoEmpleado.save();
+            
+            const nuevaNovedad = new Novedad({
+                empleadoId: nuevoEmpleado._id,
+                descripcion: `Alta pendiente en AFIP para nuevo empleado con DNI: ${nuevoEmpleado.dni}`,
+                estado: 'pendiente'
+            });
+            await nuevaNovedad.save();
+            
             res.status(201).json(nuevoEmpleado);
         } catch (error) {
             next(error);

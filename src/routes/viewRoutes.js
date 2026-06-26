@@ -137,7 +137,14 @@ router.get('/empleados/nuevo', async (req, res) => {
 
 router.post('/empleados', async (req, res) => {
     try {
-        await empleadoModel.create(req.body);
+        const nuevoEmpleado = await empleadoModel.create(req.body);
+        
+        await novedadModel.create({
+            empleadoId: nuevoEmpleado._id,
+            descripcion: `Alta pendiente en AFIP para nuevo empleado con DNI: ${nuevoEmpleado.dni}`,
+            estado: 'pendiente'
+        });
+        
         res.redirect('/empleados');
     } catch (error) {
         res.status(400).send(`<h2>Error</h2><p>${error.message}</p><a href='/empleados'>Volver</a>`);

@@ -1,4 +1,5 @@
 const Empleado = require('../models/Empleado');
+const Novedad = require('../models/Novedad');
 
 const WebhookController = {
     atsContratacion: async (req, res, next) => {
@@ -31,6 +32,21 @@ const WebhookController = {
             });
 
             await nuevoEmpleado.save();
+
+            const nuevaNovedad = new Novedad({
+                empleadoId: nuevoEmpleado._id,
+                descripcion: `Alta pendiente en AFIP para nuevo empleado con DNI: ${nuevoEmpleado.dni}`,
+                estado: 'pendiente'
+            });
+            await nuevaNovedad.save();
+
+            const io = req.app.get('io');
+            if (io) {
+                io.emit('alerta_nomina', {
+                    mensaje: "¡Nuevo candidato aprobado desde el ATS! Empleado registrado exitosamente.",
+                    empleado: nuevoEmpleado
+                });
+            }
 
             res.status(201).json({
                 mensaje: "Candidato del ATS registrado exitosamente",
