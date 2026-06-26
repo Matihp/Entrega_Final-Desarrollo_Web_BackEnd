@@ -15,6 +15,18 @@ block content
                     select.form-select(name="empresaId" required)
                         each empresa in empresas
                             option(value=empresa.id selected=empresa.id===empleado.empresaId)= empresa.nombre
+
+                div.mb-3
+                    label.form-label DNI
+                    input.form-control(type="text" name="dni" value=empleado.dni required)
+                
+                div.mb-3
+                    label.form-label Email
+                    input.form-control(type="email" name="email" value=empleado.email required)
+                
+                div.mb-3
+                    label.form-label CBU
+                    input.form-control(type="text" name="cbu" value=empleado.cbu minlength="22" maxlength="22" title="Debe tener exactamente 22 caracteres" required)
                 
                 button.btn.btn-primary(type="submit") Actualizar Empleado
                 a.btn.btn-secondary.ms-2(href="/empleados") Cancelar

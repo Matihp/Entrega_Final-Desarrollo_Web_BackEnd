@@ -17,5 +17,17 @@ block content
                         each empresa in empresas
                             option(value=empresa.id)= empresa.nombre
                 
+                div.mb-3
+                    label.form-label DNI
+                    input.form-control(type="text" name="dni" required)
+                
+                div.mb-3
+                    label.form-label Email
+                    input.form-control(type="email" name="email" required)
+                
+                div.mb-3
+                    label.form-label CBU
+                    input.form-control(type="text" name="cbu" minlength="22" maxlength="22" title="Debe tener exactamente 22 caracteres" required)
+                
                 button.btn.btn-success(type="submit") Guardar Empleado
                 a.btn.btn-secondary.ms-2(href="/empleados") Cancelar

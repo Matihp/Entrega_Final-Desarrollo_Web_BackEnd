@@ -13,6 +13,9 @@ block content
                 tr
                     th ID
                     th Nombre
+                    th DNI
+                    th Email
+                    th CBU
                     th Empresa ID
                     th Acciones
             tbody
@@ -20,6 +23,9 @@ block content
                     tr
                         td= empleado.id
                         td= empleado.nombre
+                        td= empleado.dni
+                        td= empleado.email
+                        td= empleado.cbu
                         td= empleado.empresaId
                         td
                             a.btn.btn-sm.btn-warning.me-1(href=`/empleados/${empleado.id}/editar`) Editar
