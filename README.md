@@ -12,6 +12,41 @@ Este es un proyecto de desarrollo para la Consultora HR "Talento Evolutivo S.A."
 * **Tiempo Real:** Socket.IO
 * **Testing:** Jest, Supertest, MongoDB Memory Server
 
+## 🚀 Instalación y Ejecución Local
+
+Para probar o levantar este proyecto en un entorno local, sigue estos pasos:
+
+1. **Clonar el repositorio:**
+   ```bash
+   git clone https://github.com/Matihp/Entrega_Final-Desarrollo_Web_BackEnd.git
+   cd Entrega_Final-Desarrollo_Web_BackEnd
+   ```
+
+2. **Instalar las dependencias:**
+   ```bash
+   npm install
+   ```
+
+3. **Configurar las Variables de Entorno:**
+   - Crea un archivo llamado `.env` en la raíz del proyecto.
+   - Pega las siguientes variables y reemplaza la URI con tus credenciales de MongoDB Atlas:
+     ```env
+     PORT=3000
+     SECRET=TuClaveSuperSecretaParaJWT123
+     MONGODB_URI=mongodb+srv://<usuario>:<password>@cluster0.mongodb.net/NombreDB?retryWrites=true&w=majority
+     ```
+
+4. **Levantar el servidor:**
+   ```bash
+   npm start
+   ```
+   *La aplicación estará disponible en `http://localhost:3000`.*
+
+5. **Correr los tests automatizados (Opcional):**
+   ```bash
+   npm test
+   ```
+
 ## 📸 Evidencia Visual (Imágenes)
 ![Formulario de Inicio de Sesión](./assets/formulario-login.png)
 *Vista del formulario de inicio de sesión de la plataforma.*
